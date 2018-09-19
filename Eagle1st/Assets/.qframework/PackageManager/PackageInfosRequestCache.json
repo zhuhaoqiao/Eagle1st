@@ -153,6 +153,12 @@
       "readme": {
         "items": [
           {
+            "version": "v0.0.5",
+            "content": "support demo",
+            "author": "liangxie",
+            "date": "now"
+          },
+          {
             "version": "v0.0.4",
             "content": "AddTranslation => AddTransition",
             "author": "liangxie",
@@ -179,6 +185,20 @@
         ]
       },
       "PackageVersions": [
+        {
+          "Version": "v0.0.5",
+          "DownloadUrl": "http://liangxiegame.com/media/1.ActionKit_v0.0.5.unitypackage",
+          "InstallPath": "Assets/QFramework/Framework/1.ActionKit/",
+          "Readme": {
+            "version": "v0.0.5",
+            "content": "support demo",
+            "author": "liangxie",
+            "date": "now"
+          },
+          "Name": "1.ActionKit",
+          "VersionNumber": 5,
+          "FileName": "1.ActionKit_v0.0.5.unitypackage"
+        },
         {
           "Version": "v0.0.4",
           "DownloadUrl": "http://liangxiegame.com/media/1.ActionKit_v0.0.4.unitypackage",
@@ -236,10 +256,10 @@
           "FileName": "1.ActionKit_v0.0.1.unitypackage"
         }
       ],
-      "Version": "v0.0.4",
-      "DownloadUrl": "http://liangxiegame.com/media/1.ActionKit_v0.0.4.unitypackage",
+      "Version": "v0.0.5",
+      "DownloadUrl": "http://liangxiegame.com/media/1.ActionKit_v0.0.5.unitypackage",
       "InstallPath": "Assets/QFramework/Framework/1.ActionKit/",
-      "VersionNumber": 4,
+      "VersionNumber": 5,
       "Installed": true
     },
     {

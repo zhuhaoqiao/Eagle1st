@@ -89,6 +89,13 @@ public class EagleFSM : MonoSingleton<EagleFSM> {
 
     public void Clear()
     {
+        GameBeginCallBack = null;
+        TakeOffSuccessCallBack = null;
+        LandingBeginCallBack = null;
+        UpSpeedCallBack = null;
+        DownSpeedCallBack = null;
+        DestroyedCallBack = null;
+        LandingSuccessCallBack = null;
         mEagleFSMLite.Clear();
     }
 

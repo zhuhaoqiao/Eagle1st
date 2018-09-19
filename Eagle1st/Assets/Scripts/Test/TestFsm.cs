@@ -1,15 +1,17 @@
+using QFramework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TestFsm : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         EagleFSM.Instance.GameBeginCallBack = TestGameBegin;
 
         EagleFSM.Instance.StartState(EagleFSM.EagleState.IDLE);
-	}
+    }
 
     private void Update()
     {
@@ -21,7 +23,8 @@ public class TestFsm : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void TestGameBegin () {
+    void TestGameBegin()
+    {
         Debug.Log("yeah!!!!!!!");
-	}
+    }
 }
