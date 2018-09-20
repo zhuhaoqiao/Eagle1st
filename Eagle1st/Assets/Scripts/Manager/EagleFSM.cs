@@ -4,8 +4,8 @@ using UnityEngine;
 using QFramework;
 using System;
 
-public class EagleFSM : MonoSingleton<EagleFSM> {
-
+namespace Eagle1st
+{
     public enum EagleState
     {
         IDLE,
@@ -27,80 +27,97 @@ public class EagleFSM : MonoSingleton<EagleFSM> {
         LandingSuccess
     }
 
-    QFSMLite mEagleFSMLite = new QFSMLite();
+    public class EagleFSM : MonoBehaviour
+    {   
+        QFSMLite mEagleFSMLite = new QFSMLite();
 
-    public Action GameBeginCallBack;
-    public Action TakeOffSuccessCallBack;
-    public Action LandingBeginCallBack;
-    public Action UpSpeedCallBack;
-    public Action DownSpeedCallBack;
-    public Action DestroyedCallBack;
-    public Action LandingSuccessCallBack;
+        public Action GameBeginCallBack;
+        public Action TakeOffSuccessCallBack;
+        public Action LandingBeginCallBack;
+        public Action UpSpeedCallBack;
+        public Action DownSpeedCallBack;
+        public Action DestroyedCallBack;
+        public Action LandingSuccessCallBack;
 
-    public override void OnSingletonInit()
-    {      
-        mEagleFSMLite.AddState(EagleState.IDLE.ToString());
-        mEagleFSMLite.AddState(EagleState.TAKEOFF.ToString());
-        mEagleFSMLite.AddState(EagleState.FLIGHT.ToString());
-        mEagleFSMLite.AddState(EagleState.SPEEDUP.ToString());
-        mEagleFSMLite.AddState(EagleState.LANDING.ToString());
-        mEagleFSMLite.AddState(EagleState.DEATH.ToString());
+        private EagleState mCurrentState;
 
-        mEagleFSMLite.AddTranslation(EagleState.IDLE.ToString(), EagleFSMEvent.GameBegin.ToString(), EagleState.TAKEOFF.ToString(),delegate
+        public EagleState CurrentState
         {
-            GameBeginCallBack.InvokeGracefully();
-        });
+            get { return mCurrentState; }
+        }
 
-        mEagleFSMLite.AddTranslation(EagleState.TAKEOFF.ToString(), EagleFSMEvent.TakeOffSuccess.ToString(), EagleState.FLIGHT.ToString(), delegate
+        void Start()
         {
-            TakeOffSuccessCallBack.InvokeGracefully();
-        });
+            mEagleFSMLite.AddState(EagleState.IDLE.ToString());
+            mEagleFSMLite.AddState(EagleState.TAKEOFF.ToString());
+            mEagleFSMLite.AddState(EagleState.FLIGHT.ToString());
+            mEagleFSMLite.AddState(EagleState.SPEEDUP.ToString());
+            mEagleFSMLite.AddState(EagleState.LANDING.ToString());
+            mEagleFSMLite.AddState(EagleState.DEATH.ToString());
 
-        mEagleFSMLite.AddTranslation(EagleState.FLIGHT.ToString(), EagleFSMEvent.LandingBegin.ToString(), EagleState.LANDING.ToString(), delegate
+            mEagleFSMLite.AddTranslation(EagleState.IDLE.ToString(), EagleFSMEvent.GameBegin.ToString(), EagleState.TAKEOFF.ToString(), delegate
+             {
+                 GameBeginCallBack.InvokeGracefully();
+                 mCurrentState = EagleState.TAKEOFF;
+             });
+
+            mEagleFSMLite.AddTranslation(EagleState.TAKEOFF.ToString(), EagleFSMEvent.TakeOffSuccess.ToString(), EagleState.FLIGHT.ToString(), delegate
+            {
+                TakeOffSuccessCallBack.InvokeGracefully();
+                mCurrentState = EagleState.FLIGHT;
+            });
+
+            mEagleFSMLite.AddTranslation(EagleState.FLIGHT.ToString(), EagleFSMEvent.LandingBegin.ToString(), EagleState.LANDING.ToString(), delegate
+            {
+                LandingBeginCallBack.InvokeGracefully();
+                mCurrentState = EagleState.LANDING;
+            });
+
+            mEagleFSMLite.AddTranslation(EagleState.FLIGHT.ToString(), EagleFSMEvent.UpSpeed.ToString(), EagleState.SPEEDUP.ToString(), delegate
+            {
+                UpSpeedCallBack.InvokeGracefully();
+                mCurrentState = EagleState.SPEEDUP;
+            });
+
+            mEagleFSMLite.AddTranslation(EagleState.SPEEDUP.ToString(), EagleFSMEvent.DownSpeed.ToString(), EagleState.FLIGHT.ToString(), delegate
+            {
+                DownSpeedCallBack.InvokeGracefully();
+                mCurrentState = EagleState.FLIGHT;
+            });
+
+            mEagleFSMLite.AddTranslation(EagleState.FLIGHT.ToString(), EagleFSMEvent.Dstroyed.ToString(), EagleState.DEATH.ToString(), delegate
+            {
+                DestroyedCallBack.InvokeGracefully();
+                mCurrentState = EagleState.DEATH;
+            });
+
+            mEagleFSMLite.AddTranslation(EagleState.LANDING.ToString(), EagleFSMEvent.LandingSuccess.ToString(), EagleState.IDLE.ToString(), delegate
+            {
+                LandingSuccessCallBack.InvokeGracefully();
+                mCurrentState = EagleState.IDLE;
+            });
+        }
+
+        public void StartState(EagleState startState)
         {
-            LandingBeginCallBack.InvokeGracefully();
-        });
+            mEagleFSMLite.Start(startState.ToString());
+        }
 
-        mEagleFSMLite.AddTranslation(EagleState.FLIGHT.ToString(), EagleFSMEvent.UpSpeed.ToString(), EagleState.SPEEDUP.ToString(), delegate
+        public void Clear()
         {
-            UpSpeedCallBack.InvokeGracefully();
-        });
+            GameBeginCallBack = null;
+            TakeOffSuccessCallBack = null;
+            LandingBeginCallBack = null;
+            UpSpeedCallBack = null;
+            DownSpeedCallBack = null;
+            DestroyedCallBack = null;
+            LandingSuccessCallBack = null;
+            mEagleFSMLite.Clear();
+        }
 
-        mEagleFSMLite.AddTranslation(EagleState.SPEEDUP.ToString(), EagleFSMEvent.DownSpeed.ToString(), EagleState.FLIGHT.ToString(), delegate
+        public void Perform(EagleFSMEvent eagleFSMEvent)
         {
-            DownSpeedCallBack.InvokeGracefully();
-        });
-
-        mEagleFSMLite.AddTranslation(EagleState.FLIGHT.ToString(), EagleFSMEvent.Dstroyed.ToString(), EagleState.DEATH.ToString(), delegate
-        {
-            DestroyedCallBack.InvokeGracefully();
-        });
-
-        mEagleFSMLite.AddTranslation(EagleState.LANDING.ToString(), EagleFSMEvent.LandingSuccess.ToString(), EagleState.IDLE.ToString(), delegate
-        {
-            LandingSuccessCallBack.InvokeGracefully();
-        });
-    }
-
-    public void StartState(EagleState startState)
-    {
-        mEagleFSMLite.Start(startState.ToString());
-    }
-
-    public void Clear()
-    {
-        GameBeginCallBack = null;
-        TakeOffSuccessCallBack = null;
-        LandingBeginCallBack = null;
-        UpSpeedCallBack = null;
-        DownSpeedCallBack = null;
-        DestroyedCallBack = null;
-        LandingSuccessCallBack = null;
-        mEagleFSMLite.Clear();
-    }
-
-    public void Perform(EagleFSMEvent eagleFSMEvent)
-    {
-        mEagleFSMLite.HandleEvent(eagleFSMEvent.ToString());
+            mEagleFSMLite.HandleEvent(eagleFSMEvent.ToString());
+        }
     }
 }

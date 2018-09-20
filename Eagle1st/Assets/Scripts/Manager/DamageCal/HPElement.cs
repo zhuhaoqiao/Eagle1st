@@ -4,36 +4,40 @@ using UnityEngine;
 using System;
 using QFramework;
 
-public class HPElement : MonoBehaviour {
-
-    private int mHP;
-
-    public Action OnDestroyed;
-
-    public int HP
+namespace Eagle1st
+{
+    public class HPElement : MonoBehaviour
     {
-        get { return mHP; }
-    }
 
-    void Start()
-    {
-        mHP = 100;
-    }
+        private int mHP;
 
-    public void OnAttacked(int damage)
-    {
-        mHP -= damage;
+        public Action OnDestroyed;
 
-        if (mHP <= 0)
+        public int HP
         {
-            OnDestroyed.InvokeGracefully();
-
-            Destroy(this);
+            get { return mHP; }
         }
-    }
 
-    void OnDestroy()
-    {
-        OnDestroyed = null;
+        void Start()
+        {
+            mHP = 100;
+        }
+
+        public void OnAttacked(int damage)
+        {
+            mHP -= damage;
+
+            if (mHP <= 0)
+            {
+                OnDestroyed.InvokeGracefully();
+
+                Destroy(this);
+            }
+        }
+
+        void OnDestroy()
+        {
+            OnDestroyed = null;
+        }
     }
 }
