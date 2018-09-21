@@ -7,7 +7,6 @@ namespace Eagle1st
 {
     public class PlanePool : MonoSingleton<PlanePool>
     {
-        private Dictionary<string, PlaneAttribute> mActivePlaneDict = new Dictionary<string, PlaneAttribute>();
         private Dictionary<string, List<GameObject>> mInactivePlaneDict = new Dictionary<string, List<GameObject>>();
 
         private ResLoader mResLoader = null;
@@ -22,6 +21,9 @@ namespace Eagle1st
 
         public PlaneAttribute AddPlaneByModel(string model, PlaneType planeType = PlaneType.Enemy)
         {
+            if (!ResMgr.Instance.ActivePlaneDict.ContainsKey(model))
+                return null;
+
             GameObject PlaneObj = null;
 
             if (mInactivePlaneDict.ContainsKey(model))
@@ -36,15 +38,14 @@ namespace Eagle1st
             }
             else
             {
-                PlaneObj = Instantiate(mResLoader.LoadSync<GameObject>("", model)) as GameObject;                
+                PlaneObj = Instantiate(mResLoader.LoadSync<GameObject>("", model)) as GameObject;
             }
 
             PlaneAttribute planeAttribute = PlaneObj.AddComponent<PlaneAttribute>();
             planeAttribute.hpElement = PlaneObj.AddComponent<HPElement>();
             planeAttribute.CtrlType = planeType;
             planeAttribute.Model = model;
-
-            mActivePlaneDict.Add(model, planeAttribute);
+            planeAttribute.gameObject.tag = planeType.ToString();           
 
             return planeAttribute;
         }
@@ -53,6 +54,7 @@ namespace Eagle1st
         {
             string modelKey = planeAttribute.Model;
             GameObject planeObj = planeAttribute.gameObject;
+            planeObj.tag = "Untagged";
 
             List<Component> comList = new List<Component>();
             foreach (var component in planeObj.GetComponents<Component>())
@@ -72,6 +74,13 @@ namespace Eagle1st
             {
                 mInactivePlaneDict.Add(modelKey, new List<GameObject> { planeObj });
             }
+        }
+
+        public void Clear()
+        {
+            mInactivePlaneDict.Clear();
+            mResLoader.Recycle2Cache();
+            mResLoader = null;
         }
     }
 }

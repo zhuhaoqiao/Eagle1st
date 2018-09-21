@@ -14,6 +14,15 @@ namespace Eagle1st
 
     public class PlaneCtrl : MonoSingleton<PlaneCtrl>
     {
+        private PlaneAttribute mCurrentPlane;
 
+        private void InitPlayer()
+        {
+            mCurrentPlane = PlanePool.Instance.AddPlaneByModel("F-10", PlaneType.Player);
+
+            mCurrentPlane.gameObject.AddComponent<Player>();
+        }
+
+        
     }
 }

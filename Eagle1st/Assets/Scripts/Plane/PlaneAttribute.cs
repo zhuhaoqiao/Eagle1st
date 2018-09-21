@@ -9,7 +9,7 @@ namespace Eagle1st
         public string Model;
         public PlaneType CtrlType;
         public HPElement hpElement;
-        public int BulletId;
+        public List<int> BulletId;
 
         public void InitInfo()
         {

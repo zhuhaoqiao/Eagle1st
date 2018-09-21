@@ -5,9 +5,8 @@ using UnityEngine;
 
 namespace Eagle1st
 {
-    public class Bullet : MonoBehaviour
+    public class BulletElement : MonoBehaviour
     {
-
         public int Id;
         public string Type;
         public int Damage;
