@@ -15,7 +15,6 @@ namespace Eagle1st
 
         public void OnSingletonInit()
         {
-            Debug.Log("ResMgr Init");
             ResMgr.Init();
         }
 

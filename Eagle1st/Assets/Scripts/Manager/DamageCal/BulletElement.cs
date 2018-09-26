@@ -16,34 +16,37 @@ namespace Eagle1st
 
         private bool mCanRun;
         private Vector3 mRunDirect = Vector3.zero;
+        private string mParentTag;
 
         private string mAttackName;
 
         public bool IsAttack
         {
-            get { return mAttackName == "player" || mAttackName == "friendly" || mAttackName == "enemy"; }
+            get { return mAttackName == "Player" || mAttackName == "Friendly" || mAttackName == "Enemy"; }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider collider)
         {
-            mAttackName = collision.gameObject.tag;
+            mAttackName = collider.gameObject.tag;
 
-            if (IsAttack)
+            if (IsAttack && mAttackName != mParentTag)
             {
-                collision.gameObject.GetComponent<HPElement>().OnAttacked(Damage);
+                collider.gameObject.GetComponent<HPElement>().OnAttacked(Damage);
+                Log.I(collider.gameObject.GetComponent<HPElement>().HP);
+                Destroy(gameObject);
             }
         }
 
-        private void OnCollisionExit(Collision collision)
+        private void OnTriggerExit(Collider collider)
         {
             mAttackName = string.Empty;
         }
 
         public void Launch(Transform parentTran)
         {
+            mParentTag = parentTran.tag;
             mRunDirect = parentTran.localRotation.eulerAngles + Vector3.back;
             transform.SetParent(parentTran);
-            Log.I(mRunDirect + " " + Distance + " " + speed);
 
             this.Sequence()
                .Event(() => mCanRun = true)
@@ -58,7 +61,6 @@ namespace Eagle1st
         {
             if (mCanRun)
             {
-                Log.I("RUN!!!!!");
                 transform.Translate(mRunDirect * Time.deltaTime * speed);
             }
         }

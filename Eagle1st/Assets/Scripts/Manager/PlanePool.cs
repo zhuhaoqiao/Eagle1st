@@ -24,7 +24,6 @@ namespace Eagle1st
         {
             if (!ModelResMgr.Instance.ActivePlaneDict.ContainsKey(model))
             {
-                Debug.Log("Not Plane!!!");
                 return null;
             }
 

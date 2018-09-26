@@ -31,7 +31,7 @@ namespace Eagle1st
             {
                 OnDestroyed.InvokeGracefully();
 
-                Destroy(this);
+                Destroy(gameObject);
             }
         }
 
