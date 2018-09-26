@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using QFramework;
+using LitJson;
 
 namespace Eagle1st
 {
@@ -30,7 +31,7 @@ namespace Eagle1st
         {
             WWWHelper.Instance.WWWGetText(url, 15f, (text) =>
              {
-
+                 JsonMapper.ToObject<PlaneAttribute>(text);
              });
         }
 
@@ -38,7 +39,7 @@ namespace Eagle1st
         {
             WWWHelper.Instance.WWWGetText(url, 15f, (text) =>
             {
-
+                JsonMapper.ToObject<BulletElement>(text);
             });
         }
     }
