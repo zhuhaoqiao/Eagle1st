@@ -23,6 +23,9 @@ namespace Eagle1st
             mCurrentPlane.gameObject.AddComponent<Player>();
         }
 
-        
+        public void ProducteEnemy()
+        {
+            PlanePool.Instance.AddPlaneByModel("F10", PlaneType.Enemy).gameObject.AddComponent<AISys>().Load(4f, mCurrentPlane.transform);
+        }
     }
 }

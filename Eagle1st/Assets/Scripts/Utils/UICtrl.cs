@@ -28,6 +28,8 @@ namespace Eagle1st
             UIMgr.SetResolution(1280, 720, 0);
 
             PlaneCtrl.Instance.InitPlayer();
+
+            PlaneCtrl.Instance.ProducteEnemy();
         }
     }
 }
