@@ -3,26 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UICtrl : MonoBehaviour {
-
-    private LoadingCanvas mLoadingCanvas;
-
-    // Use this for initialization
-    void Start()
+namespace Eagle1st
+{
+    public class UICtrl : MonoBehaviour
     {
-        mLoadingCanvas = GameObject.Find("LoadingCanvas").GetComponent<LoadingCanvas>();
 
-        OpenUIMain();
-    }
+        private LoadingCanvas mLoadingCanvas;
 
-    private void OpenUIMain()
-    {
-        if (mLoadingCanvas.gameObject)
+        // Use this for initialization
+        void Start()
         {
-            Destroy(mLoadingCanvas.gameObject);
+            mLoadingCanvas = GameObject.Find("LoadingCanvas").GetComponent<LoadingCanvas>();
+
+            OpenUIMain();
         }
 
-        UIMgr.SetResolution(1280, 720, 0);
+        private void OpenUIMain()
+        {
+            if (mLoadingCanvas.gameObject)
+            {
+                Destroy(mLoadingCanvas.gameObject);
+            }
 
+            UIMgr.SetResolution(1280, 720, 0);
+
+            PlaneCtrl.Instance.InitPlayer();
+        }
     }
 }

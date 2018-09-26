@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using QFramework;
+using QAssetBundle;
 
 namespace Eagle1st
 {
@@ -21,7 +22,7 @@ namespace Eagle1st
 
         public BulletElement AddBulletById(int bulletId)
         {
-            if (!ResMgr.Instance.ActiveBulletDict.ContainsKey(bulletId))
+            if (!ModelResMgr.Instance.ActiveBulletDict.ContainsKey(bulletId))
                 return null;
 
             GameObject BulletObj = null;
@@ -38,10 +39,17 @@ namespace Eagle1st
             }
             else
             {
-                BulletObj = Instantiate(mResLoader.LoadSync<GameObject>("", ResMgr.Instance.ActiveBulletDict[bulletId].Type)) as GameObject;
+                BulletObj = Instantiate(mResLoader.LoadSync<GameObject>(Bulletpre.BundleName, ModelResMgr.Instance.ActiveBulletDict[bulletId].Type)) as GameObject;
             }
 
             BulletElement bulletElement = BulletObj.AddComponent<BulletElement>();
+            bulletElement.Id = ModelResMgr.Instance.ActiveBulletDict[bulletId].Id;
+            bulletElement.Damage = ModelResMgr.Instance.ActiveBulletDict[bulletId].Damage;
+            bulletElement.Type = ModelResMgr.Instance.ActiveBulletDict[bulletId].Type;
+            bulletElement.Distance = ModelResMgr.Instance.ActiveBulletDict[bulletId].Distance;
+            bulletElement.Blow = ModelResMgr.Instance.ActiveBulletDict[bulletId].Blow;
+            bulletElement.speed = ModelResMgr.Instance.ActiveBulletDict[bulletId].speed;
+            bulletElement.transform.localPosition = Vector3.zero;
 
             return bulletElement;
         }

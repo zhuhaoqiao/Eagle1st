@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using QFramework;
+using QAssetBundle;
 
 namespace Eagle1st
 {
@@ -21,8 +22,11 @@ namespace Eagle1st
 
         public PlaneAttribute AddPlaneByModel(string model, PlaneType planeType = PlaneType.Enemy)
         {
-            if (!ResMgr.Instance.ActivePlaneDict.ContainsKey(model))
+            if (!ModelResMgr.Instance.ActivePlaneDict.ContainsKey(model))
+            {
+                Debug.Log("Not Plane!!!");
                 return null;
+            }
 
             GameObject PlaneObj = null;
 
@@ -38,14 +42,15 @@ namespace Eagle1st
             }
             else
             {
-                PlaneObj = Instantiate(mResLoader.LoadSync<GameObject>("", model)) as GameObject;
+                PlaneObj = Instantiate(mResLoader.LoadSync<GameObject>(Planepre.BundleName, model)) as GameObject;
             }
 
             PlaneAttribute planeAttribute = PlaneObj.AddComponent<PlaneAttribute>();
             planeAttribute.hpElement = PlaneObj.AddComponent<HPElement>();
             planeAttribute.CtrlType = planeType;
             planeAttribute.Model = model;
-            planeAttribute.gameObject.tag = planeType.ToString();           
+            planeAttribute.gameObject.tag = planeType.ToString();
+            planeAttribute.transform.localPosition = Vector3.zero;
 
             return planeAttribute;
         }

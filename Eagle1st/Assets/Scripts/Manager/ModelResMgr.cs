@@ -5,7 +5,7 @@ using QFramework;
 
 namespace Eagle1st
 {
-    public class ResMgr : MonoSingleton<ResMgr>
+    public class ModelResMgr : MonoSingleton<ModelResMgr>
     {
         private Dictionary<string, PlaneAttribute> mActivePlaneDict = new Dictionary<string, PlaneAttribute>();
         private Dictionary<int, BulletElement> mActiveBulletDict = new Dictionary<int, BulletElement>();
@@ -18,6 +18,13 @@ namespace Eagle1st
         public Dictionary<int, BulletElement> ActiveBulletDict
         {
             get { return mActiveBulletDict; }
+        }
+
+        public override void OnSingletonInit()
+        {
+            Debug.Log("Add Plane");
+            mActivePlaneDict.Add("F10", new PlaneAttribute() { Model = "F10" });
+            mActiveBulletDict.Add(1, new BulletElement() { Id = 1, Type = "bullet_1", Distance = 5f, Blow = 3f, speed = 1f });
         }
 
         public void GetPlaneInfo(string url)

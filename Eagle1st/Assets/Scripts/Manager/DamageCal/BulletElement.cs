@@ -12,8 +12,8 @@ namespace Eagle1st
         public int Damage;
         public float Distance;
         public float Blow;
+        public float speed;
 
-        private float speed;
         private bool mCanRun;
         private Vector3 mRunDirect = Vector3.zero;
 
@@ -39,24 +39,26 @@ namespace Eagle1st
             mAttackName = string.Empty;
         }
 
-        public void Launch(Vector3 direction)
+        public void Launch(Transform parentTran)
         {
-            mRunDirect = direction;
+            mRunDirect = parentTran.localRotation.eulerAngles + Vector3.back;
+            transform.SetParent(parentTran);
+            Log.I(mRunDirect + " " + Distance + " " + speed);
 
             this.Sequence()
-                .Event(() => mCanRun = true)
-                .Delay(Distance / speed)
-                .Event(() => mCanRun = false)
-                .Event(() => gameObject.GetComponent<SphereCollider>().radius = Blow)
-                .Begin()
-                .OnDisposed(() => { Destroy(gameObject); });
+               .Event(() => mCanRun = true)
+               .Delay(Distance / speed)
+               .Event(() => mCanRun = false)
+               .Event(() => gameObject.GetComponent<SphereCollider>().radius = Blow)
+               .Begin()
+               .OnDisposed(() => { Destroy(gameObject); });
         }
-
 
         void Update()
         {
             if (mCanRun)
             {
+                Log.I("RUN!!!!!");
                 transform.Translate(mRunDirect * Time.deltaTime * speed);
             }
         }

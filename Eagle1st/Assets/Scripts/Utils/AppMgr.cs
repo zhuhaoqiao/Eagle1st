@@ -3,26 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[MonoSingletonPath("[Entrance]/AppMgr")]
-public class AppMgr : MonoBehaviour, ISingleton
+namespace Eagle1st
 {
-    public static AppMgr Instance
+    [MonoSingletonPath("[Entrance]/AppMgr")]
+    public class AppMgr : MonoBehaviour, ISingleton
     {
-        get { return MonoSingletonProperty<AppMgr>.Instance; }
-    }
+        public static AppMgr Instance
+        {
+            get { return MonoSingletonProperty<AppMgr>.Instance; }
+        }
 
-    public void OnSingletonInit() { }
+        public void OnSingletonInit()
+        {
+            Debug.Log("ResMgr Init");
+            ResMgr.Init();
+        }
 
-    void Awake()
-    {
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-    }
+        void Awake()
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        }
 
-    void Start()
-    {
-        ResMgr.Init();
+        void Start()
+        {
 
-        //添加启动模块
-        //gameObject.AddComponent<StartProcessModule>();
+            //添加启动模块
+            //gameObject.AddComponent<StartProcessModule>();
+        }
     }
 }
+

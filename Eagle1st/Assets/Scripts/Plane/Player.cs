@@ -11,7 +11,7 @@ namespace Eagle1st
         // Use this for initialization
         void Start()
         {
-            Init();
+            //Init();
         }
 
         private void Init()
@@ -19,6 +19,14 @@ namespace Eagle1st
             gameObject.AddComponent<EagleFSM>().StartState(EagleState.IDLE);
 
             DamageCalMgr.Instance.RefreshPlans(gameObject.name, gameObject.AddComponent<HPElement>());
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                BulletCtrl.Instance.LaunchBullet(1, transform);
+            }
         }
     }
 }

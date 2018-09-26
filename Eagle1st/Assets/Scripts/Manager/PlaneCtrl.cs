@@ -16,9 +16,10 @@ namespace Eagle1st
     {
         private PlaneAttribute mCurrentPlane;
 
-        private void InitPlayer()
+        public void InitPlayer()
         {
-            mCurrentPlane = PlanePool.Instance.AddPlaneByModel("F-10", PlaneType.Player);
+            Debug.Log("Init Player");
+            mCurrentPlane = PlanePool.Instance.AddPlaneByModel("F10", PlaneType.Player);
 
             mCurrentPlane.gameObject.AddComponent<Player>();
         }
