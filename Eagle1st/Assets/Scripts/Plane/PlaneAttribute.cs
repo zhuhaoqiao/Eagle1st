@@ -6,6 +6,7 @@ namespace Eagle1st
 {
     public class PlaneAttribute : MonoBehaviour
     {
+        public int Id;
         public string Model;
         public PlaneType CtrlType;
         public HPElement hpElement;

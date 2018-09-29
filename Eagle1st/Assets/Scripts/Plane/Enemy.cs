@@ -1,22 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using QFramework;
 
 namespace Eagle1st
 {
     public class Enemy : MonoBehaviour
     {
+        private PlaneAttribute mPlaneAttribute;
 
-        // Use this for initialization
         void Start()
         {
-
+            mPlaneAttribute = gameObject.GetComponent<PlaneAttribute>();
         }
 
-        // Update is called once per frame
         void Update()
         {
+            UIManager.Instance.SendMsg(new UIEnemyPosRefreshMsg() {
+                Id = mPlaneAttribute.Id,
+                WorldPos = transform.position
+            });
+        }
 
+        void OnDestroy()
+        {
+            UIManager.Instance.SendMsg(new UIPlaneDestroyMsg()
+            {
+                Id = mPlaneAttribute.Id,
+            });
         }
     }
 }

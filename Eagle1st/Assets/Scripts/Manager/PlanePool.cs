@@ -51,6 +51,21 @@ namespace Eagle1st
             planeAttribute.gameObject.tag = planeType.ToString();
             planeAttribute.transform.localPosition = Vector3.zero;
 
+            switch (planeType)
+            {
+                case PlaneType.Player:
+                    PlaneObj.AddComponent<Player>();
+                    break;
+                case PlaneType.Friendly:
+                    PlaneObj.AddComponent<Friendly>();
+                    break;
+                case PlaneType.Enemy:
+                    PlaneObj.AddComponent<Enemy>();
+                    break;
+                default:
+                    break;
+            }
+
             return planeAttribute;
         }
 
