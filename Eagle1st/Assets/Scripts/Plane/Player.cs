@@ -20,13 +20,5 @@ namespace Eagle1st
 
             DamageCalMgr.Instance.RefreshPlans(gameObject.name, gameObject.AddComponent<HPElement>());
         }
-
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                BulletCtrl.Instance.LaunchBullet(1, transform);
-            }
-        }
     }
 }

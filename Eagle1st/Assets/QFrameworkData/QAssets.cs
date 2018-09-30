@@ -20,6 +20,7 @@ namespace QAssetBundle
     {
         public const string BundleName = "PLANEPRE";
         public const string F10 = "F10";
+        public const string J_11 = "J_11";
     }
     public class Uiconnect_prefab
     {
@@ -30,5 +31,10 @@ namespace QAssetBundle
     {
         public const string BundleName = "UIMSG_PREFAB";
         public const string UIMSG = "UIMSG";
+    }
+    public class Uiprefab
+    {
+        public const string BundleName = "UIPREFAB";
+        public const string UIHUD = "UIHUD";
     }
 }

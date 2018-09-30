@@ -30,18 +30,27 @@ namespace Eagle1st
 	{
         private Dictionary<int,GameObject> mEnemyPosBoxDict = new Dictionary<int, GameObject>();
 
-		protected override void InitUI(IUIData uiData = null)
+        private Transform mTopRightPos;
+        private Transform mLowerLeftPos;
+
+        protected override void InitUI(IUIData uiData = null)
 		{
 			mData = uiData as UIHUDData ?? new UIHUDData();
-			//please add init code here
-		}
+
+            mTopRightPos = GameObject.Find("TopRight").transform;
+            mLowerLeftPos = GameObject.Find("LowerLeft").transform;
+            //please add init code here
+
+            GetComponent<RectTransform>().localPosition = new Vector3(0f, 0f, 76f);
+            GetComponent<RectTransform>().sizeDelta = new Vector2(30f, 25f);
+        }
 
 		protected override void ProcessMsg (int eventId,QMsg msg)
 		{
             switch (eventId)
             {
                 case (int)UIHUDEvent.RefreshHUD:
-                    UIEnemyPosRefreshMsg posMsg = msg as UIEnemyPosRefreshMsg;
+                    UIEnemyPosRefreshMsg posMsg = msg as UIEnemyPosRefreshMsg;                  
                     RefreshEnemyPos(posMsg.Id, posMsg.WorldPos);
                     break;
                 case (int)UIHUDEvent.PlaneDestroy:
@@ -53,10 +62,12 @@ namespace Eagle1st
                     break;
             }
         }
+        
 
 		protected override void RegisterUIEvent()
 		{
             RegisterEvent(UIHUDEvent.RefreshHUD);
+            RegisterEvent(UIHUDEvent.PlaneDestroy);
         }
 
 		protected override void OnShow()
@@ -79,27 +90,31 @@ namespace Eagle1st
 			Debug.Log("[ UIHUD:]" + content);
 		}
 
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            collision.Show();
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            collision.Hide();
-        }
-
         private void RefreshEnemyPos(int enemyId,Vector3 enemyWorldPos)
         {
-            Vector3 enemyScreenPos = Camera.main.WorldToScreenPoint(enemyWorldPos);
+            float MaxY = Camera.main.WorldToScreenPoint(mTopRightPos.position).y;
+            float MaxX = Camera.main.WorldToScreenPoint(mTopRightPos.position).x;
+            float MinY = Camera.main.WorldToScreenPoint(mLowerLeftPos.position).y;
+            float MinX = Camera.main.WorldToScreenPoint(mLowerLeftPos.position).x;
 
+            Vector3 enemyScreenPos = Camera.main.WorldToScreenPoint(enemyWorldPos);
             if (!mEnemyPosBoxDict.ContainsKey(enemyId))
             {
                 GameObject boxGO = Instantiate(Box_Pre.gameObject) as GameObject;
+                boxGO.transform.SetParent(transform);
                 mEnemyPosBoxDict.Add(enemyId, boxGO);
             }
 
-            mEnemyPosBoxDict[enemyId].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(enemyScreenPos.x, enemyScreenPos.y, transform.position.z));
+            mEnemyPosBoxDict[enemyId].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(enemyScreenPos.x, enemyScreenPos.y, Camera.main.WorldToScreenPoint(transform.position).z));
+
+            if (enemyScreenPos.y < MaxY && enemyScreenPos.y > MinY && enemyScreenPos.x < MaxX && enemyScreenPos.x > MinX)
+            {
+                mEnemyPosBoxDict[enemyId].Show();
+            }
+            else
+            {
+                mEnemyPosBoxDict[enemyId].Hide();
+            }
         }
     }
     

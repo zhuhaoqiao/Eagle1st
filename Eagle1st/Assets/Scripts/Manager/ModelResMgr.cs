@@ -24,6 +24,7 @@ namespace Eagle1st
         public override void OnSingletonInit()
         {
             mActivePlaneDict.Add("F10", new PlaneAttribute() { Model = "F10" });
+            mActivePlaneDict.Add("J_11", new PlaneAttribute() { Model = "J_11" });
             mActiveBulletDict.Add(1, new BulletElement() { Id = 1, Type = "bullet_1", Distance = 25f, Blow = 3f, speed = 2f, Damage = 10 });
         }
 

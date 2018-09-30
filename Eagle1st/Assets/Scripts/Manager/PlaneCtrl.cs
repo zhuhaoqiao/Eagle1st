@@ -37,17 +37,19 @@ namespace Eagle1st
         {
             mPlayerPlane = PlanePool.Instance.AddPlaneByModel("F10", PlaneType.Player);
             mPlayerPlane.Id = ReturnIndex();
-            mFlightPlaneDict.Add(mPlaneMaxIndex, mPlayerPlane);
+            mFlightPlaneDict.Add(mPlayerPlane.Id, mPlayerPlane);
+
+            UIMgr.OpenPanel<UIHUD>();
         }
 
         public void ProducteEnemy()
         {
             int enemyIndex = ReturnIndex();
 
-            PlaneAttribute enemyPlane = PlanePool.Instance.AddPlaneByModel("F10", PlaneType.Enemy);
-            enemyPlane.gameObject.AddComponent<AISys>().Load(4f, mPlayerPlane.transform);
+            PlaneAttribute enemyPlane = PlanePool.Instance.AddPlaneByModel("J_11", PlaneType.Enemy);
+            enemyPlane.gameObject.AddComponent<AISys>().Load(30000f, mPlayerPlane.transform);
             enemyPlane.Id = enemyIndex;
-            mFlightPlaneDict.Add(enemyIndex, enemyPlane);
+            mFlightPlaneDict.Add(enemyPlane.Id, enemyPlane);
         }
 
         public void RecyclePlane(int planeId)

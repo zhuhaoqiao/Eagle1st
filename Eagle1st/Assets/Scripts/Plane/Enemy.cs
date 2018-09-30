@@ -16,7 +16,8 @@ namespace Eagle1st
 
         void Update()
         {
-            UIManager.Instance.SendMsg(new UIEnemyPosRefreshMsg() {
+            QMsgCenter.Instance.SendMsg(new UIEnemyPosRefreshMsg() {
+                EventID = (ushort)UIHUDEvent.RefreshHUD,
                 Id = mPlaneAttribute.Id,
                 WorldPos = transform.position
             });
@@ -24,8 +25,9 @@ namespace Eagle1st
 
         void OnDestroy()
         {
-            UIManager.Instance.SendMsg(new UIPlaneDestroyMsg()
+            QMsgCenter.Instance.SendMsg(new UIPlaneDestroyMsg()
             {
+                EventID = (ushort)UIHUDEvent.PlaneDestroy,
                 Id = mPlaneAttribute.Id,
             });
         }

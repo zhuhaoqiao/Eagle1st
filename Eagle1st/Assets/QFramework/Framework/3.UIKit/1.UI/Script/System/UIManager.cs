@@ -85,6 +85,7 @@ namespace QFramework
 
 		public static UIManager Instance
 		{
+
 			get
 			{
 				if (null == mInstance)
@@ -99,6 +100,17 @@ namespace QFramework
 					mInstance.name = "UIRoot";
 					DontDestroyOnLoad(mInstance);
 				}
+
+                if (mInstance.GetComponent<Canvas>().renderMode == RenderMode.WorldSpace)
+                {
+                    mInstance.GetComponent<Canvas>().worldCamera = Camera.main;
+                    GameObject playerGO = GameObject.Find("Player") as GameObject;
+                    if (playerGO != null)
+                    {
+                        mInstance.transform.SetParent(playerGO.transform);
+                        mInstance.transform.localPosition = new Vector3(0f, 0f, 0.04f);
+                    }                  
+                }
 
 				return mInstance;
 			}
