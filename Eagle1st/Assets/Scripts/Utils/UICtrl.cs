@@ -18,6 +18,8 @@ namespace Eagle1st
             OpenUIMain();
         }
 
+
+
         private void OpenUIMain()
         {
             if (mLoadingCanvas.gameObject)

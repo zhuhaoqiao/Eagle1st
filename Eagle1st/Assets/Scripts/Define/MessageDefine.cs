@@ -1,7 +1,4 @@
 using QFramework;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Eagle1st
 {

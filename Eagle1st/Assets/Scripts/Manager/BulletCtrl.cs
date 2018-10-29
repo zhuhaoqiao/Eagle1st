@@ -8,9 +8,9 @@ namespace Eagle1st
     public class BulletCtrl : MonoSingleton<BulletCtrl>
     {
 
-        public void LaunchBullet(int bullerId, Transform parentTran)
+        public void LaunchBullet(int bullerId, Transform parentTran,GameObject targetGO = null)
         {
-            BulletPool.Instance.AddBulletById(bullerId).Launch(parentTran);
+            BulletPool.Instance.AddBulletById(bullerId).Launch(parentTran, targetGO);
         }
     }
 }

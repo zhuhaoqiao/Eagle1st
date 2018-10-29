@@ -18,21 +18,23 @@ namespace Eagle1st
 
         public Dictionary<int, BulletElement> ActiveBulletDict
         {
+
             get { return mActiveBulletDict; }
         }
 
         public override void OnSingletonInit()
         {
+            mActivePlaneDict.Add("Player", new PlaneAttribute() { Model = "Player" });
             mActivePlaneDict.Add("F10", new PlaneAttribute() { Model = "F10" });
             mActivePlaneDict.Add("J_11", new PlaneAttribute() { Model = "J_11" });
-            mActiveBulletDict.Add(1, new BulletElement() { Id = 1, Type = "bullet_1", Distance = 25f, Blow = 3f, speed = 2f, Damage = 10 });
+            mActiveBulletDict.Add(1, new BulletElement() { Id = 1, Type = "bullet_1", Distance = 10000f, Blow = 300f, Speed = 100f, Damage = 10, RadarValue = 50f });
         }
 
         public void GetPlaneInfo(string url)
         {
             WWWHelper.Instance.WWWGetText(url, 15f, (text) =>
              {
-                 JsonMapper.ToObject<PlaneAttribute>(text);
+                 JsonMapper.ToObject<PlaneData>(text);
              });
         }
 

@@ -48,7 +48,8 @@ namespace Eagle1st
             bulletElement.Type = ModelResMgr.Instance.ActiveBulletDict[bulletId].Type;
             bulletElement.Distance = ModelResMgr.Instance.ActiveBulletDict[bulletId].Distance;
             bulletElement.Blow = ModelResMgr.Instance.ActiveBulletDict[bulletId].Blow;
-            bulletElement.speed = ModelResMgr.Instance.ActiveBulletDict[bulletId].speed;
+            bulletElement.Speed = ModelResMgr.Instance.ActiveBulletDict[bulletId].Speed;
+            bulletElement.RadarValue = ModelResMgr.Instance.ActiveBulletDict[bulletId].RadarValue;
             bulletElement.transform.localPosition = Vector3.zero;
 
             return bulletElement;

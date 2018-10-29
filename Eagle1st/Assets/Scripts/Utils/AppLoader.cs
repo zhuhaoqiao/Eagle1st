@@ -19,6 +19,8 @@ namespace Eagle1st
             Input.multiTouchEnabled = false;
             mUICtrl.gameObject.Show();
             Destroy(gameObject);
+
+            
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Eagle1st
             QMsgCenter.Instance.SendMsg(new UIEnemyPosRefreshMsg() {
                 EventID = (ushort)UIHUDEvent.RefreshHUD,
                 Id = mPlaneAttribute.Id,
-                WorldPos = transform.position
+                EnemyGO = gameObject
             });
         }
 

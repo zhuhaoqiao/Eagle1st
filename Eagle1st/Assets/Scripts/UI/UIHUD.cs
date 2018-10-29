@@ -18,7 +18,7 @@ namespace Eagle1st
     public class UIEnemyPosRefreshMsg : QMsg
     {
         public int Id;
-        public Vector3 WorldPos = new Vector3();
+        public GameObject EnemyGO;
     }
 
     public class UIPlaneDestroyMsg : QMsg
@@ -32,6 +32,8 @@ namespace Eagle1st
 
         private Transform mTopRightPos;
         private Transform mLowerLeftPos;
+
+        private GameObject mLockEnemy;
 
         protected override void InitUI(IUIData uiData = null)
 		{
@@ -50,13 +52,15 @@ namespace Eagle1st
             switch (eventId)
             {
                 case (int)UIHUDEvent.RefreshHUD:
-                    UIEnemyPosRefreshMsg posMsg = msg as UIEnemyPosRefreshMsg;                  
-                    RefreshEnemyPos(posMsg.Id, posMsg.WorldPos);
+                    UIEnemyPosRefreshMsg posMsg = msg as UIEnemyPosRefreshMsg;
+                    mLockEnemy = posMsg.EnemyGO;
+                    RefreshEnemyPos(posMsg.Id);
                     break;
                 case (int)UIHUDEvent.PlaneDestroy:
                     UIPlaneDestroyMsg planeDestroyMsg = msg as UIPlaneDestroyMsg;
                     if(mEnemyPosBoxDict.ContainsKey(planeDestroyMsg.Id))
                     {
+                        Destroy(mEnemyPosBoxDict[planeDestroyMsg.Id]);
                         mEnemyPosBoxDict.Remove(planeDestroyMsg.Id);
                     }
                     break;
@@ -90,14 +94,14 @@ namespace Eagle1st
 			Debug.Log("[ UIHUD:]" + content);
 		}
 
-        private void RefreshEnemyPos(int enemyId,Vector3 enemyWorldPos)
+        private void RefreshEnemyPos(int enemyId)
         {
             float MaxY = Camera.main.WorldToScreenPoint(mTopRightPos.position).y;
             float MaxX = Camera.main.WorldToScreenPoint(mTopRightPos.position).x;
             float MinY = Camera.main.WorldToScreenPoint(mLowerLeftPos.position).y;
-            float MinX = Camera.main.WorldToScreenPoint(mLowerLeftPos.position).x;
+            float MinX = Camera.main.WorldToScreenPoint(mLowerLeftPos.position).x;         
 
-            Vector3 enemyScreenPos = Camera.main.WorldToScreenPoint(enemyWorldPos);
+            Vector3 enemyScreenPos = Camera.main.WorldToScreenPoint(mLockEnemy.transform.position);
             if (!mEnemyPosBoxDict.ContainsKey(enemyId))
             {
                 GameObject boxGO = Instantiate(Box_Pre.gameObject) as GameObject;
@@ -105,7 +109,7 @@ namespace Eagle1st
                 mEnemyPosBoxDict.Add(enemyId, boxGO);
             }
 
-            mEnemyPosBoxDict[enemyId].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(enemyScreenPos.x, enemyScreenPos.y, Camera.main.WorldToScreenPoint(transform.position).z));
+            mEnemyPosBoxDict[enemyId].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(enemyScreenPos.x, enemyScreenPos.y, Camera.main.WorldToScreenPoint(mTopRightPos.position).z));
 
             if (enemyScreenPos.y < MaxY && enemyScreenPos.y > MinY && enemyScreenPos.x < MaxX && enemyScreenPos.x > MinX)
             {
@@ -114,6 +118,14 @@ namespace Eagle1st
             else
             {
                 mEnemyPosBoxDict[enemyId].Hide();
+            }
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                BulletCtrl.Instance.LaunchBullet(1, transform, mLockEnemy);
             }
         }
     }

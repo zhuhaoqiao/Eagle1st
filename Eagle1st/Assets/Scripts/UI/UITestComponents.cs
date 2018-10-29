@@ -7,24 +7,22 @@ namespace Eagle1st
 	using UnityEngine;
 	using UnityEngine.UI;
 
-	public partial class UIHUD
+	public partial class UITest
 	{
-		public const string NAME = "UIHUD";
+		public const string NAME = "UITest";
 
-		[SerializeField] public Image Box_Pre;
-		[SerializeField] public Image HUD;
+		[SerializeField] public Button BtnTest;
 
 		protected override void ClearUIComponents()
 		{
-			Box_Pre = null;
-			HUD = null;
+			BtnTest = null;
 		}
 
-		private UIHUDData mPrivateData = null;
+		private UITestData mPrivateData = null;
 
-		public UIHUDData mData
+		public UITestData mData
 		{
-			get { return mPrivateData ?? (mPrivateData = new UIHUDData()); }
+			get { return mPrivateData ?? (mPrivateData = new UITestData()); }
 			set
 			{
 				mUIData = value;

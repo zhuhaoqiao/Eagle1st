@@ -19,6 +19,6 @@ namespace Eagle1st
             gameObject.AddComponent<EagleFSM>().StartState(EagleState.IDLE);
 
             DamageCalMgr.Instance.RefreshPlans(gameObject.name, gameObject.AddComponent<HPElement>());
-        }
+        }       
     }
 }
