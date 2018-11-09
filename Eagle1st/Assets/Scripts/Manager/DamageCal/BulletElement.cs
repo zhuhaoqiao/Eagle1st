@@ -78,8 +78,8 @@ namespace Eagle1st
         {
             mParentTag = parentTran.tag;
             transform.SetParent(parentTran);
-            transform.localPosition = new Vector3(0f, -750f, 900f);
-            mRunDirect = new Vector3(0f, 0f, 90f);
+            transform.localPosition = Vector3.zero;
+            mRunDirect = parentTran.forward;
 
             if (targetGO != null)
             {
@@ -119,7 +119,6 @@ namespace Eagle1st
     
             if (mCanRun)
             {
-                Debug.Log(mCurrentBulletType + " " + mIsRadar);
                 if (mCurrentBulletType == BulletElementType.Missile && mIsRadar)
                 {
                     mRunDirect = mTargetGO.transform.position - transform.position;

@@ -47,7 +47,7 @@ namespace Eagle1st
             int enemyIndex = ReturnIndex();
 
             PlaneAttribute enemyPlane = PlanePool.Instance.AddPlaneByModel("J_11", PlaneType.Enemy);
-            enemyPlane.gameObject.AddComponent<AISys>().Load(30000f, mPlayerPlane.transform);
+            enemyPlane.gameObject.AddComponent<AISys>().Load(100f, mPlayerPlane.transform);
             enemyPlane.Id = enemyIndex;
             mFlightPlaneDict.Add(enemyPlane.Id, enemyPlane);
             enemyPlane.Show();

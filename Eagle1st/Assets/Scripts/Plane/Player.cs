@@ -16,6 +16,7 @@ namespace Eagle1st
 
         private void Init()
         {
+            gameObject.AddComponent<PlayerControl>().mSpeed = 700f;
             gameObject.AddComponent<EagleFSM>().StartState(EagleState.IDLE);
 
             DamageCalMgr.Instance.RefreshPlans(gameObject.name, gameObject.AddComponent<HPElement>());

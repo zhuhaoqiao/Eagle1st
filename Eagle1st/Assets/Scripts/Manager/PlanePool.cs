@@ -49,7 +49,7 @@ namespace Eagle1st
             planeAttribute.CtrlType = planeType;
             planeAttribute.Model = model;
             planeAttribute.gameObject.tag = planeType.ToString();
-            planeAttribute.transform.localPosition = Vector3.zero;
+            planeAttribute.transform.localPosition = new Vector3(-456.4f, 146.9f, 363.2f);
 
             switch (planeType)
             {

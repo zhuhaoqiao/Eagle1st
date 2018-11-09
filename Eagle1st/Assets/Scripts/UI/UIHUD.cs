@@ -34,6 +34,9 @@ namespace Eagle1st
         private Transform mLowerLeftPos;
 
         private GameObject mLockEnemy;
+	    private GameObject mPlayerGO;
+
+	    private bool mHUDIsShow;
 
         protected override void InitUI(IUIData uiData = null)
 		{
@@ -41,6 +44,7 @@ namespace Eagle1st
 
             mTopRightPos = GameObject.Find("TopRight").transform;
             mLowerLeftPos = GameObject.Find("LowerLeft").transform;
+		    mPlayerGO = GameObject.Find("Player(Clone)") as GameObject;
             //please add init code here
 
             GetComponent<RectTransform>().localPosition = new Vector3(0f, 0f, 76f);
@@ -53,7 +57,7 @@ namespace Eagle1st
             {
                 case (int)UIHUDEvent.RefreshHUD:
                     UIEnemyPosRefreshMsg posMsg = msg as UIEnemyPosRefreshMsg;
-                    mLockEnemy = posMsg.EnemyGO;
+                    mLockEnemy = posMsg.EnemyGO.transform.Find("CenterPoint").gameObject;
                     RefreshEnemyPos(posMsg.Id);
                     break;
                 case (int)UIHUDEvent.PlaneDestroy:
@@ -104,19 +108,22 @@ namespace Eagle1st
             Vector3 enemyScreenPos = Camera.main.WorldToScreenPoint(mLockEnemy.transform.position);
             if (!mEnemyPosBoxDict.ContainsKey(enemyId))
             {
-                GameObject boxGO = Instantiate(Box_Pre.gameObject) as GameObject;
+                GameObject boxGO = Instantiate(Box_Pre.gameObject) as GameObject;              
                 boxGO.transform.SetParent(transform);
+                boxGO.transform.localScale = Vector3.one * 0.0005f;
                 mEnemyPosBoxDict.Add(enemyId, boxGO);
             }
 
-            mEnemyPosBoxDict[enemyId].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(enemyScreenPos.x, enemyScreenPos.y, Camera.main.WorldToScreenPoint(mTopRightPos.position).z));
+            mEnemyPosBoxDict[enemyId].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(enemyScreenPos.x + 10f, enemyScreenPos.y, Camera.main.WorldToScreenPoint(mTopRightPos.position).z));
 
             if (enemyScreenPos.y < MaxY && enemyScreenPos.y > MinY && enemyScreenPos.x < MaxX && enemyScreenPos.x > MinX)
             {
+                mHUDIsShow = true;
                 mEnemyPosBoxDict[enemyId].Show();
             }
             else
             {
+                mHUDIsShow = false;
                 mEnemyPosBoxDict[enemyId].Hide();
             }
         }
@@ -125,7 +132,14 @@ namespace Eagle1st
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                BulletCtrl.Instance.LaunchBullet(1, transform, mLockEnemy);
+                if (mHUDIsShow)
+                {
+                    BulletCtrl.Instance.LaunchBullet(1, mPlayerGO.transform, mLockEnemy);
+                }
+                else
+                {
+                    BulletCtrl.Instance.LaunchBullet(1, mPlayerGO.transform);
+                }             
             }
         }
     }
