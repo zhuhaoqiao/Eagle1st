@@ -31,6 +31,8 @@ namespace Eagle1st
 
         private string mAttackName;
 
+        private Transform mBulletPoint;
+
         private BulletElementType mCurrentBulletType;
 
         public BulletElementType CurrentBulletType
@@ -76,10 +78,14 @@ namespace Eagle1st
 
         public void Launch(Transform parentTran, GameObject targetGO = null)
         {
+            mBulletPoint = parentTran.Find("BulletPoint");
             mParentTag = parentTran.tag;
             transform.SetParent(parentTran);
-            transform.localPosition = Vector3.zero;
-            mRunDirect = parentTran.forward;
+            transform.localPosition = new Vector3(0f, 0.5f, 0f);
+            mBulletPoint.LocalPositionY(transform.localPosition.y);
+
+            transform.localRotation = Quaternion.identity;
+            mRunDirect = mBulletPoint.localPosition - transform.localPosition;
 
             if (targetGO != null)
             {
