@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
+using System.Collections;
 
 namespace Eagle1st
 {
@@ -37,6 +38,9 @@ namespace Eagle1st
 	    private GameObject mPlayerGO;
 
 	    private bool mHUDIsShow;
+
+        private float mShootTime = 1f;
+        private bool mIsShoot;
 
         protected override void InitUI(IUIData uiData = null)
 		{
@@ -132,6 +136,14 @@ namespace Eagle1st
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                if (mIsShoot) return;
+
+                mIsShoot = true;
+                this.Delay(mShootTime, () =>
+                {
+                    mIsShoot = false;
+                });
+
                 if (mHUDIsShow)
                 {
                     BulletCtrl.Instance.LaunchBullet(1, mPlayerGO.transform, mLockEnemy);
